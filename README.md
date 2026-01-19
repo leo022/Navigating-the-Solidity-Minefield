@@ -49,6 +49,10 @@ Security concepts are often abstract. This guide bridges the gap between theory 
 * **Architecture Diagrams:** Visualizing control flow in Re-Entrancy and Delegatecall exploits.
 * **"Red Team / Blue Team" Code:** Every chapter includes the *vulnerable* code snippet alongside the *patched* version, with line-by-line diffs explaining the fix.
 
+#### 3. The Engineer's Lens
+
+As a Network Security Engineer, I approach this not just as a coder, but as a defender. We don't just ask "Does it compile?"; we ask "How can this be weaponized?"
+
 ---
 
 ### The Roadmap
@@ -68,3 +72,5 @@ This is an open invitation to learn alongside me. Whether you are a Web2 develop
 * **Open an Issue** if you spot a new vector or want to debate a pattern.
 
 Let's build something unhackable.
+
+**- TC**
