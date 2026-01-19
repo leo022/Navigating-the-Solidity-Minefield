@@ -72,5 +72,3 @@ This is an open invitation to learn alongside me. Whether you are a Web2 develop
 * **Open an Issue** if you spot a new vector or want to debate a pattern.
 
 Let's build something unhackable.
-
-**- TC**
