@@ -1,7 +1,3 @@
-Here is a technical article based on your requirements, focusing on the mechanics of the EVM, the specific Ethernaut scenario, and modern remediation strategies.
-
----
-
 # The Ghost in the Machine: Dissecting and Fixing Re-entrancy Vulnerabilities
 
 Re-entrancy is arguably the most iconic vulnerability in smart contract history. From The DAO hack in 2016 to modern DeFi exploits, the pattern remains a critical concept for every security engineer. While many developers know *what* it is, fewer understand the underlying mechanics of EVM execution flow that make it possible.
@@ -142,7 +138,7 @@ contract ReentrancyAttacker {
 contract ScriptReentrancy is Script {
     function run() external {
         // 目标合约地址
-        address targetAddress = 0x2Bf72Ae9CcA90Fcb9C9F8C70C422dAd8f6Ea0053; // 替换为实际地址
+        address targetAddress = 0x.......; // 替换为实际地址
         
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
         address attacker = vm.addr(privateKey);
