@@ -13,8 +13,8 @@
 | Target Date | Phase | Topic | Key Concepts Covered | Status |
 | --- | --- | --- | --- | --- |
 | **Jan 19, 2026** | **Launch** | **Project Kickoff** | Outline, Repository Structure, Introduction Post | ✅ **Live** |
-| **Feb 02, 2026** | Phase I | **Re-Entrancy** | Recursive calls, `Checks-Effects-Interactions`, Mutex patterns, *The DAO* case study. | 🚧 In Progress |
-| **Feb 16, 2026** | Phase I | **Identity & Auth** | `tx.origin` vs `msg.sender`, Phishing vectors, Authorization modifiers. | ✅ **Live** |
+| **Feb 02, 2026** | Phase I | **Re-Entrancy** | Recursive calls, `Checks-Effects-Interactions`, Mutex patterns, *The DAO* case study. | ✅ **Live** |
+| **Feb 16, 2026** | Phase I | **Identity & Auth** | `tx.origin` vs `msg.sender`, Phishing vectors, Authorization modifiers. | 🚧 In Progress|
 | **Mar 02, 2026** | Phase I | **Access & Visibility** | Default visibility risks, `private` vs `internal`, Function exposure analysis. | ⏳ Pending |
 | **Mar 16, 2026** | Phase I | **Context Corruption** | `delegatecall` mechanics, Storage collision, Library security, *Parity Hack* analysis. | ⏳ Pending |
 | **Mar 30, 2026** | Phase II | **Integer Arithmetic** | Overflow/Underflow (Pre-0.8 vs Post-0.8), `unchecked` blocks, Type casting risks. | ⏳ Pending |
